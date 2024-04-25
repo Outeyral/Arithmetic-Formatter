@@ -1,0 +1,57 @@
+def arithmetic_arranger(problems, show_results=False):
+    if len(problems) > 5:
+        return "Error: Too many problems."
+
+    arranged_problems = ""
+    top_line = ""
+    bottom_line = ""
+    dash_line = ""
+    result_line = ""
+
+    for problem in problems:
+        parts = problem.split()
+
+        # Check if operands are numeric
+        if not parts[0].isdigit() or not parts[2].isdigit():
+            return "Error: Numbers must only contain digits."
+
+        # Check if the operator is valid
+        if parts[1] not in ["+", "-"]:
+            return "Error: Operator must be '+' or '-'."
+
+        # Check if operands are not more than four digits
+        if len(parts[0]) > 4 or len(parts[2]) > 4:
+            return "Error: Numbers cannot be more than four digits."
+
+        # Determine the length of the longest operand
+        width = max(len(parts[0]), len(parts[2])) + 2
+
+        top_line += parts[0].rjust(width) + "    "
+        bottom_line += parts[1] + parts[2].rjust(width - 1) + "    "
+        dash_line += "-" * width + "    "
+
+        # Calculate the result if specified
+        if show_results:
+            if parts[1] == "+":
+                res = str(int(parts[0]) + int(parts[2]))
+            else:
+                res = str(int(parts[0]) - int(parts[2]))
+
+            # Build the line for the result
+            result_line += res.rjust(width)
+            result_line += "    "
+
+    # Remove trailing spaces and add line breaks
+    arranged_problems += top_line.rstrip() + "\n"
+    arranged_problems += bottom_line.rstrip() + "\n"
+    arranged_problems += dash_line.rstrip() 
+
+    # Add result line if specified
+    if show_results:
+        arranged_problems += "\n" + result_line.rstrip() 
+
+    return arranged_problems 
+
+
+print(arithmetic_arranger(["32 + 698", "3801 - 2", "45 + 43", "123 + 49"]))
+print(arithmetic_arranger(["32 + 8", "1 - 3801", "9999 + 9999", "523 - 49"], True))
